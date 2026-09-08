@@ -1,0 +1,37 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Rebase custom configuration onto upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/iDvel/rime-ice.git
+          git fetch upstream main
+          git fetch origin main custom
+          custom_sha=$(git rev-parse origin/custom)
+          git switch -C custom origin/custom
+          git rebase --onto upstream/main origin/main
+          test "$(git rev-list --count upstream/main..custom)" -eq 1
+          git push --atomic \
+            --force-with-lease="custom:${custom_sha}" \
+            origin upstream/main:main custom

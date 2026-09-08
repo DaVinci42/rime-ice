@@ -50,6 +50,12 @@ make -C others/script/ lint
 
 修改配置（default.yaml、weasel.yaml、squirrel.yaml、*.schema.yaml）和 lua 文件后，先安装 yamllint 和 luarocks 和 luacheck（`luarocks install luacheck`），然后运行 `make -C others/script/ lint` 进行校验。
 
+## Git hooks 与万象模型
+
+- `.githooks/post-merge` 和 `.githooks/post-rewrite` 随仓库同步，分别在合并（含快进）及 rebase 后调用 `others/script/check-wanxiang-gram.sh`。每台机器首次使用时需执行一次 `git config --local core.hooksPath .githooks`，Git 不会自动启用仓库中的 hooks。
+- 若根目录的 `*.custom.yaml` 配置了 `wanxiang-lts-zh-hans`，脚本会检查 Rime 用户目录根部的 `wanxiang-lts-zh-hans.gram` 是否存在且非空；缺失时仅提示下载并重新部署，不会阻止拉取，也不验证模型完整性。
+- `.gitignore` 忽略 `*.gram`，模型文件不会随 Git 同步；其他机器须从万象上游仓库 [amzxyz/rime-wanxiang-data 的 LTS 发布页](https://github.com/amzxyz/rime-wanxiang-data/releases/tag/LTS) 下载当前发布的简体模型 `wanxiang-lts-zh-hans.gram`（[直接下载](https://github.com/amzxyz/rime-wanxiang-data/releases/download/LTS/wanxiang-lts-zh-hans.gram)），放入 Rime 用户目录根部后重新部署。macOS 鼠须管的用户目录通常是 `~/Library/Rime/`。
+
 ## 主要文件和作用
 
 修改或添加内容对文件时，依照以下说明放置到对应文件：

@@ -58,6 +58,7 @@ Dota	dota
 main	main
 Amazon	amazon
 NASA	nasa
+iOS	ios	100
 gone	gone
 Go程	gocheng
 code	code

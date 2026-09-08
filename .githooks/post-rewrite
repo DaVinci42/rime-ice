@@ -1,0 +1,4 @@
+#!/bin/sh
+case "$1" in
+  rebase) sh "$(git rev-parse --show-toplevel)/others/script/check-wanxiang-gram.sh" ;;
+esac
