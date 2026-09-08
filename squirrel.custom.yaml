@@ -1,0 +1,5 @@
+patch:
+  preset_color_schemes/purity_of_form_custom/candidate_list_layout: linear
+  preset_color_schemes/purity_of_form_custom/font_point: 16
+  preset_color_schemes/purity_of_form_custom/translucency: true
+  preset_color_schemes/purity_of_form_custom/corner_radius: 8
